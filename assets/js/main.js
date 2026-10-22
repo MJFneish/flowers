@@ -9,12 +9,12 @@
  *   ui/       hint and buttons
  */
 
-import { START_TIME, clock, input } from './core/state.js';
+import { clock, input } from './core/state.js';
 import { wind } from './core/math.js';
 import { clearScreen, copyGlow, initGlow, resizeCanvases, screenSpace } from './render/canvas.js';
 import { measureViewport } from './render/viewport.js';
 import { focusOf, refocus, updateCamera, worldSpace } from './render/camera.js';
-import { drawBackGrass, drawFrontGrass, drawStars, makeStars, resizeBackground } from './world/background.js';
+import { drawBackGrass, drawFrontGrass, drawStars, makeStars, regrowGrass, resizeBackground } from './world/background.js';
 import { createScene, drawGarden, drawPickedFlowers, updateGarden } from './world/garden.js';
 import { clearParticles, seedEmbers, updateEmbers, updateWorldParticles } from './world/particles.js';
 import { clearScents, updateScents } from './world/scent.js';
@@ -37,10 +37,13 @@ function resize() {
   refocus(focus);
 }
 
-/** Start the garden over from seed. */
+/**
+ * Start the garden over from seed. The clock keeps running — rewinding it made anything
+ * timed against it (like the legendary camera shake) misbehave.
+ */
 function replay() {
-  clock.time = START_TIME;
   input.press = null;
+  regrowGrass();
   clearParticles();
   clearScents();
   clearTexts();
@@ -91,6 +94,7 @@ function frame(now) {
 
 initGlow();
 resize();
+regrowGrass();
 makeStars();
 seedEmbers();
 createScene();

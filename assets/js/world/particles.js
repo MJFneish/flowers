@@ -8,6 +8,7 @@ import { TAU, clamp, rand } from '../core/math.js';
 import { clock, reduceMotion, view } from '../core/state.js';
 import { ctx } from '../render/canvas.js';
 import { inView } from '../render/camera.js';
+import { sparkHue } from '../flowers/hue.js';
 
 /** @import { Flower } from '../flowers/flower.js' */
 /** @import { ParticleData } from '../core/types.js' */
@@ -20,10 +21,11 @@ let particles = [];
 let embers = [];
 
 /**
- * Add a world-space particle (anything not given gets a default).
+ * Add a world-space particle (anything not given gets a default). Species use this for
+ * their own effects.
  * @param {Partial<ParticleData> & { x: number, y: number }} p
  */
-function emit(p) {
+export function spawnParticle(p) {
   if (particles.length >= MAX_PARTICLES) return;
   particles.push({
     vx: 0, vy: 0, life: 1, age: 0, size: 1, hue: 30, sat: 100, light: rand(65, 85),
@@ -46,7 +48,7 @@ function emit(p) {
 export function spawnBurst(x, y, hue, R, count = 28, sat = 100) {
   for (let i = 0; i < count; i++) {
     const a = rand(0, TAU), sp = rand(40, 160) * clamp(R / 60, 0.5, 1.6);
-    emit({
+    spawnParticle({
       x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
       life: rand(0.9, 1.9), size: rand(0.8, 2.2), hue: hue + rand(0, 30), sat, drag: 2.4, gravity: 18,
     });
@@ -60,7 +62,7 @@ export function spawnBurst(x, y, hue, R, count = 28, sat = 100) {
  * @param {number} hue
  */
 export function spawnTipSpark(x, y, hue) {
-  emit({
+  spawnParticle({
     x, y, vx: rand(-20, 20), vy: rand(-10, 25),
     life: rand(0.5, 1.1), size: rand(0.6, 1.6), hue: hue + rand(5, 30), drag: 1.5, gravity: 10,
   });
@@ -74,7 +76,7 @@ export function spawnTipSpark(x, y, hue) {
  * @param {number} R
  */
 export function spawnPollen(x, y, hue, R) {
-  emit({
+  spawnParticle({
     x: x + rand(-R * 0.2, R * 0.2), y, vx: rand(-8, 8), vy: -rand(12, 30),
     life: rand(3, 5.5), size: rand(0.8, 1.8), hue: hue + rand(10, 30),
     drag: 0.2, gravity: -2, windK: 10, flick: 3, wobble: 14,
@@ -89,7 +91,7 @@ export function spawnPollen(x, y, hue, R) {
 export function spawnSeeds(f, count) {
   for (let i = 0; i < count; i++) {
     const a = rand(0, TAU);
-    emit({
+    spawnParticle({
       x: f.cx + Math.cos(a) * f.R * 0.6, y: f.cy + Math.sin(a) * f.R * 0.6,
       vx: Math.cos(a) * rand(20, 50) + rand(-10, 10), vy: -rand(15, 40),
       life: rand(4, 7), size: rand(1, 1.8), hue: 55, sat: 40, light: 94,
@@ -103,10 +105,10 @@ export function spawnSeeds(f, count) {
  * @param {Flower} f
  */
 export function spawnFountain(f) {
-  emit({
+  spawnParticle({
     x: f.cx + rand(-f.R * 0.2, f.R * 0.2), y: f.cy, vx: rand(-30, 30), vy: -rand(60, 140),
     life: rand(1.2, 2.2), size: rand(0.8, 2),
-    hue: f.kind === 'celestial' ? rand(0, 360) : f.hue + rand(0, 35),
+    hue: sparkHue(f, Math.random()),
     drag: 0.6, gravity: 30, windK: 6, flick: rand(6, 12),
   });
 }

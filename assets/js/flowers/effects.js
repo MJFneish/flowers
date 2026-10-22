@@ -6,6 +6,7 @@
 import { TAU, lerp } from '../core/math.js';
 import { clock, view } from '../core/state.js';
 import { drawSparkle } from '../render/shapes.js';
+import { sparkHue } from './hue.js';
 
 /** @import { Flower } from './flower.js' */
 /** @import { HeadState } from '../core/types.js' */
@@ -136,7 +137,7 @@ export function drawRarityExtras(c, f, s) {
   const speed = legendary ? 1.1 : 0.8;
   for (let i = 0; i < n; i++) {
     const a = time * speed + (i * TAU) / n + f.phase;
-    const hue = f.kind === 'celestial' ? (i * 72 + time * 60) % 360 : f.hue + 30;
+    const hue = sparkHue(f, i / n);
     const tw = 0.6 + 0.4 * Math.sin(time * 5 + i * 1.7);
     if (legendary) {
       for (let j = 1; j <= 6; j++) {

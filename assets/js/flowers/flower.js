@@ -268,6 +268,9 @@ export class Flower {
       else spawnPollen(this.cx, this.cy, this.hue, R);
     }
     if (this.sp.rarity === 'legendary' && this.age > L0 + 1 && Math.random() < dt * 26) spawnFountain(this);
+
+    // the species' own extras (snowfall, crackling sparks …)
+    if (this.sp.ambient && this.age > L0 + 1) this.sp.ambient(this, dt);
   }
 
   /** A legendary attempt: either it really is legendary, or it fizzles into something else. */

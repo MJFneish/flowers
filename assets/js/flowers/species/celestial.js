@@ -1,6 +1,6 @@
 import { TAU, rand } from '../../core/math.js';
 import { clock } from '../../core/state.js';
-import { PLAIN_STOPS, drawBud, drawCalyx, drawRings, drawStarCore, ringSet } from '../parts.js';
+import { HUE_STOPS, drawBud, drawCalyx, drawRings, drawStarCore, ringSet } from '../parts.js';
 import { DEFAULT_LEAF } from './leaves.js';
 
 /** @import { HueFn, SpeciesDef } from '../../core/types.js' */
@@ -25,7 +25,7 @@ export const celestial = {
 
   build() {
     const edge = [0, 95, 0.55];
-    const ring = { twist: 2.2, stagger: 0.04, dur: 2.2, edge, hueFn: rainbow, stops: PLAIN_STOPS };
+    const ring = { twist: 2.2, stagger: 0.04, dur: 2.2, edge, hueFn: rainbow, stops: HUE_STOPS };
     return ringSet([
       { ...ring, n: 12, len: 1, wr: 0.3, vein: 0.85 },
       { ...ring, n: 12, len: 0.84, wr: 0.32, off: Math.PI / 12, delay: 0.3, vein: 0.85 },
@@ -40,4 +40,7 @@ export const celestial = {
     drawBud(c, f, s);
     if (s.bloom > 0) drawStarCore(c, f, s, 0.26);
   },
+
+  // sparks and comets in every color of the rainbow
+  sparkHue: (_, k) => k * 360 + clock.time * 60,
 };

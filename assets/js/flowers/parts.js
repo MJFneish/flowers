@@ -10,8 +10,8 @@ import { pointedPetal, starPath } from '../render/shapes.js';
 /** @import { Flower } from './flower.js' */
 /** @import { HeadState, PaintDef, RingDef, RingSpec } from '../core/types.js' */
 
-/** Placeholder paint for rings whose color comes from a `hueFn`. */
-export const PLAIN_STOPS = [[0, 0, 100, 80, 1], [1, 0, 100, 50, 1]];
+/** Bright, glowing paint for rings whose hue comes from a `hueFn` (hue shifts are relative to it). */
+export const HUE_STOPS = [[0, 0, 100, 93, 0.97], [0.4, 0, 100, 68, 0.95], [1, 40, 100, 52, 0.9]];
 
 /**
  * Radius of a center that pops in with a little overshoot as the flower opens.
@@ -33,7 +33,7 @@ export function ringSet(specs) {
     paints.push({ len: spec.len, stops: spec.stops });
     rings.push({
       wr: 0.38, off: 0, delay: 0, twist: 1.2, stagger: 0.035, dur: 1.5,
-      shape: pointedPetal, edge: null, vein: 0, spots: 0, flicker: 0, hueFn: null,
+      shape: pointedPetal, edge: null, edgeWidth: 1, vein: 0, spots: 0, flicker: 0, spin: 1, hueFn: null,
       ...spec,
       paint: i,
     });
@@ -49,12 +49,13 @@ export function ringSet(specs) {
  */
 export function drawRings(c, f, s) {
   const time = clock.time;
-  c.lineWidth = 1;
   for (const r of f.rings) {
     const ringStart = s.L0 + r.delay;
     if (f.age <= ringStart) continue;
     const len = s.R * r.len, wid = len * r.wr;
     const fill = f.grads[r.paint];
+    const stops = f.paints[r.paint].stops;
+    c.lineWidth = r.edgeWidth;
     const edge = r.edge ? `hsla(${f.hue + r.edge[0]}, 100%, ${r.edge[1]}%, ${r.edge[2]})` : '';
     const spot = `hsla(${f.hue - 30}, 70%, 32%, 0.6)`;
 
@@ -66,7 +67,7 @@ export function drawRings(c, f, s) {
 
       c.save();
       c.rotate(
-        f.spin + r.off + (i * TAU) / r.n - (1 - e) * r.twist +
+        f.spin * r.spin + r.off + (i * TAU) / r.n - (1 - e) * r.twist +
         Math.sin(time * 0.9 + f.phase + i) * 0.015 * s.bloom
       );
       c.scale(lerp(0.3, 1, e) * s.breathe, easeOutBack(p) * s.breathe * flick);
@@ -75,9 +76,7 @@ export function drawRings(c, f, s) {
       if (r.hueFn) {
         const hh = r.hueFn(f, i, r.n);
         const pg = c.createLinearGradient(0, 0, 0, -len);
-        pg.addColorStop(0, `hsla(${hh}, 100%, 93%, 0.97)`);
-        pg.addColorStop(0.4, `hsla(${hh}, 100%, 68%, 0.95)`);
-        pg.addColorStop(1, `hsla(${hh + 40}, 100%, 52%, 0.9)`);
+        for (const [o, dh, sat, l, a] of stops) pg.addColorStop(o, `hsla(${hh + dh}, ${sat}%, ${l}%, ${a})`);
         c.fillStyle = pg;
       } else {
         c.fillStyle = fill;

@@ -1,10 +1,13 @@
 /** The camera: pan, zoom, fling, glide and the world ↔ screen transforms. */
 
+import { CONFIG } from '../config.js';
 import { clamp, rand } from '../core/math.js';
 import { clock, reduceMotion, view } from '../core/state.js';
 import { ctx } from './canvas.js';
 
 export const MAX_ZOOM = 3.5;
+/** How long (s) and how far (px) the view shakes when a legendary flower opens. */
+const SHAKE_TIME = 0.6, SHAKE_SIZE = 4;
 
 /**
  * World coordinates of the screen's top-left corner, the zoom, a fling velocity
@@ -125,7 +128,7 @@ export function refocus(focus) {
 }
 
 export function shakeCamera() {
-  cam.shakeAt = clock.time;
+  if (CONFIG.cameraShake && !reduceMotion) cam.shakeAt = clock.time;
 }
 
 /** @param {number} dt */
@@ -158,7 +161,7 @@ export function updateCamera(dt) {
 export function worldSpace() {
   const z = cam.zoom, dpr = view.DPR;
   const since = clock.time - cam.shakeAt;
-  const shake = since < 0.8 && !reduceMotion ? (1 - since / 0.8) * 7 : 0;
+  const shake = since >= 0 && since < SHAKE_TIME ? (1 - since / SHAKE_TIME) * SHAKE_SIZE : 0;
   const sx = shake ? rand(-shake, shake) : 0;
   const sy = shake ? rand(-shake, shake) : 0;
   ctx.setTransform(dpr * z, 0, 0, dpr * z, (-cam.x * z + sx) * dpr, (-cam.y * z + sy) * dpr);

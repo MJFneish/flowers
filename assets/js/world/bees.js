@@ -1,7 +1,7 @@
 /** A few bees: they fly in to open flowers, hover, hop to another flower, then leave. */
 
 import { TAU, clamp, lerp, pick, rand } from '../core/math.js';
-import { START_TIME, clock, flowers, reduceMotion, view } from '../core/state.js';
+import { clock, flowers, reduceMotion, view } from '../core/state.js';
 import { ctx } from '../render/canvas.js';
 import { inView } from '../render/camera.js';
 
@@ -12,7 +12,7 @@ import { inView } from '../render/camera.js';
 let bees = [];
 let visitors = 0;
 /** When a bee may next show up on its own if the garden is quiet. */
-let nextVisitAt = START_TIME + 15;
+let nextVisitAt = 15;
 
 const maxBees = () => (view.W < 700 ? 2 : 3);
 

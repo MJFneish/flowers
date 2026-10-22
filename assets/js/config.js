@@ -24,4 +24,6 @@ export const CONFIG = {
   embers: 0,
   /** Glow (bloom) layer on / off. */
   glow: true,
+  /** A short, gentle shake of the view when a legendary flower opens. */
+  cameraShake: true,
 };

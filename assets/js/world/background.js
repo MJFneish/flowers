@@ -19,6 +19,8 @@ let backFill = null;
 let frontFill = null;
 /** Garden width the grass was generated for. */
 let grassWidth = 0;
+/** Clock time the grass started growing. */
+let grassStart = 0;
 
 /* ------------------------------------------------------------------- stars */
 
@@ -65,6 +67,11 @@ function makeGrassFills() {
   frontFill.addColorStop(1, 'hsl(130, 40%, 9%)');
 }
 
+/** Grow the grass up from the ground, starting now (already grown with reduced motion). */
+export function regrowGrass() {
+  grassStart = reduceMotion ? clock.time - 30 : clock.time;
+}
+
 /** Rebuild after the garden size changes (new grass only if the width changed a lot). */
 export function resizeBackground() {
   makeGrassFills();
@@ -83,7 +90,7 @@ function drawGrass(blades, fill) {
   for (const b of blades) {
     const x = b.xf * WW;
     if (x < view.left - 30 || x > view.right + 30) continue;
-    const grown = easeOutCubic(progress(clock.time, b.delay, 1.6));
+    const grown = easeOutCubic(progress(clock.time - grassStart, b.delay, 1.6));
     if (grown <= 0) continue;
     const h = b.hf * WH * grown;
     const sway = (clock.wind * 0.6 + Math.sin(clock.time * 1.6 + b.ph) * 0.4) * h * 0.18 * (reduceMotion ? 0.3 : 1);

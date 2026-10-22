@@ -38,9 +38,11 @@
  * @property {PetalShape} shape
  * @property {number[] | null} edge  outline color [hue shift, lightness %, alpha]
  * @property {number} vein       midrib length (fraction of petal), 0 = none
+ * @property {number} edgeWidth  outline width
  * @property {number} spots      freckles per petal
  * @property {number} flicker    flame-like length flicker (0 = none)
- * @property {HueFn | null} hueFn  animated per-petal hue (overrides the paint)
+ * @property {number} spin       how much the flower's random rotation applies (0 = always upright)
+ * @property {HueFn | null} hueFn  animated per-petal hue; the paint's stops then shift from it
  * @property {number} paint      index into the flower's paints
  */
 
@@ -99,6 +101,11 @@
  * @property {LeafStyle} leaf
  * @property {() => { paints: PaintDef[], rings: RingDef[] }} build
  * @property {(c: CanvasRenderingContext2D, f: Flower, s: HeadState) => void} draw
+ * @property {(f: Flower, k: number) => number} [sparkHue]
+ *   hue of its sparks, orbiting comets and fountain; `k` (0 – 1) says which one
+ *   (defaults to a little around the flower's own hue)
+ * @property {(f: Flower, dt: number) => void} [ambient]
+ *   an extra effect every frame once it's open (snowfall, crackling sparks …)
  */
 
 /* ------------------------------------------------------------------ world */

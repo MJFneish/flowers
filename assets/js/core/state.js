@@ -8,11 +8,11 @@
 export const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
 
-/** With reduced motion the clock starts late, so the garden is already grown. */
-export const START_TIME = reduceMotion ? 30 : 0;
-
-/** Animation clock (seconds) and the current breeze (≈ -1 … 1). */
-export const clock = { time: START_TIME, wind: 0 };
+/**
+ * Animation clock (seconds since the page loaded) and the current breeze (≈ -1 … 1).
+ * The clock never runs backwards — a replay starts things over from "now" instead.
+ */
+export const clock = { time: 0, wind: 0 };
 
 /**
  * Sizes in CSS px: the screen (W × H), the garden world (WW × WH, wider than the screen),

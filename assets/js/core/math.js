@@ -16,6 +16,15 @@ export const randInt = (a, b) => Math.floor(rand(a, b + 1));
  */
 export const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+/**
+ * Repeatable pseudo-random number in [0, 1): the same `n` always gives the same result.
+ * @type {(n: number) => number}
+ */
+export const hash = (n) => {
+  const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+  return x - Math.floor(x);
+};
+
 /** @type {(a: number, b: number, t: number) => number} */
 export const lerp = (a, b, t) => a + (b - a) * t;
 

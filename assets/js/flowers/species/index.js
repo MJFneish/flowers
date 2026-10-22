@@ -15,8 +15,14 @@ import { dandelion } from './dandelion.js';
 import { crystalRose } from './crystal-rose.js';
 import { auroraLotus } from './aurora-lotus.js';
 import { sapphireStar } from './sapphire-star.js';
+import { moonOrchid } from './moon-orchid.js';
+import { frostBloom } from './frost-bloom.js';
+import { glowbell } from './glowbell.js';
 import { celestial } from './celestial.js';
 import { phoenix } from './phoenix.js';
+import { nebulaRose } from './nebula-rose.js';
+import { eclipseLotus } from './eclipse-lotus.js';
+import { stormLily } from './storm-lily.js';
 
 /** @import { Rarity, SpeciesDef } from '../../core/types.js' */
 
@@ -25,9 +31,9 @@ export const SPECIES = {
   // common
   lotus, daisy, rose, tulip, lily, sakura, poppy, lavender, dandelion,
   // rare
-  crystalRose, auroraLotus, sapphireStar,
+  crystalRose, auroraLotus, sapphireStar, moonOrchid, frostBloom, glowbell,
   // legendary
-  celestial, phoenix,
+  celestial, phoenix, nebulaRose, eclipseLotus, stormLily,
 };
 
 /** @param {Rarity} rarity */

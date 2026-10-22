@@ -10,11 +10,18 @@ import { inView } from '../render/camera.js';
 import { spawnPollen, spawnSeeds } from '../world/particles.js';
 import { flashHint } from '../ui/hint.js';
 
-let enabled = false;
+/** Ignore readings for this long after switching on, while the sensor settles (s). */
+const WARM_UP = 0.5;
+/** Ignore gentler movement than this — a hand just holding the phone (m/s²). */
+const DEAD_ZONE = 2;
+/** How hard a shake pushes the flowers. */
+const GAIN = 260;
+
+let enabled = false, enabledAt = 0;
 /** Latest sideways acceleration in screen terms (m/s²) and when it was read. */
 let accelX = 0, readAt = -10;
 /** Slow running average of gravity, for devices that only report it mixed in. */
-let gravityX = 0, gravityY = 0;
+let gravityX = 0, gravityY = 0, gravityReady = false;
 let nextPuff = 0;
 
 /** @param {DeviceMotionEvent} e */
@@ -25,6 +32,12 @@ function onMotion(e) {
     ax = a.x;
     ay = a.y;
   } else if (g && g.x !== null && g.y !== null) {
+    if (!gravityReady) {
+      // start the filter at the current reading, so there's no jolt when it switches on
+      gravityX = g.x;
+      gravityY = g.y;
+      gravityReady = true;
+    }
     gravityX = lerp(gravityX, g.x, 0.1);
     gravityY = lerp(gravityY, g.y, 0.1);
     ax = g.x - gravityX;
@@ -41,6 +54,7 @@ function onMotion(e) {
 function enable() {
   if (enabled) return;
   enabled = true;
+  enabledAt = clock.time;
   window.addEventListener('devicemotion', onMotion);
 }
 
@@ -72,12 +86,13 @@ export function setupMotion() {
 
 /** @param {number} dt */
 export function applyPhoneShake(dt) {
-  if (!enabled || clock.time - readAt > 0.15 || Math.abs(accelX) < 1.2) return;
+  if (!enabled || clock.time - enabledAt < WARM_UP || clock.time - readAt > 0.15) return;
+  if (Math.abs(accelX) < DEAD_ZONE) return;
 
   for (const f of flowers) {
     if (f.cutAt) continue;
     const k = clamp(f.h / (view.WH * 0.45), 0.5, 1.5); // taller flowers swing further
-    f.velX = clamp(f.velX - accelX * 320 * k * dt, -900, 900);
+    f.velX = clamp(f.velX - accelX * GAIN * k * dt, -900, 900);
   }
 
   // a hard shake knocks loose some pollen (and dandelion seeds)

@@ -1,6 +1,6 @@
 import { TAU, rand } from '../../core/math.js';
 import { clock } from '../../core/state.js';
-import { PLAIN_STOPS, coreRadius, drawBud, drawCalyx, drawCore, drawRings, drawStamens, ringSet } from '../parts.js';
+import { HUE_STOPS, coreRadius, drawBud, drawCalyx, drawCore, drawRings, drawStamens, ringSet } from '../parts.js';
 import { DEFAULT_LEAF } from './leaves.js';
 
 /** @import { HueFn, SpeciesDef } from '../../core/types.js' */
@@ -26,10 +26,10 @@ export const auroraLotus = {
   build() {
     const edge = [60, 92, 0.5];
     return ringSet([
-      { n: 10, len: 1, wr: 0.36, edge, vein: 0.8, hueFn: aurora, stops: PLAIN_STOPS },
-      { n: 10, len: 0.8, wr: 0.36, off: Math.PI / 10, delay: 0.25, edge, vein: 0.8, hueFn: aurora, stops: PLAIN_STOPS },
-      { n: 8, len: 0.58, wr: 0.4, off: rand(0, TAU), delay: 0.5, edge, vein: 0.75, hueFn: aurora, stops: PLAIN_STOPS },
-      { n: 6, len: 0.36, wr: 0.45, off: rand(0, TAU), delay: 0.75, edge, hueFn: aurora, stops: PLAIN_STOPS },
+      { n: 10, len: 1, wr: 0.36, edge, vein: 0.8, hueFn: aurora, stops: HUE_STOPS },
+      { n: 10, len: 0.8, wr: 0.36, off: Math.PI / 10, delay: 0.25, edge, vein: 0.8, hueFn: aurora, stops: HUE_STOPS },
+      { n: 8, len: 0.58, wr: 0.4, off: rand(0, TAU), delay: 0.5, edge, vein: 0.75, hueFn: aurora, stops: HUE_STOPS },
+      { n: 6, len: 0.36, wr: 0.45, off: rand(0, TAU), delay: 0.75, edge, hueFn: aurora, stops: HUE_STOPS },
     ]);
   },
 

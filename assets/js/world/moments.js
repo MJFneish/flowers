@@ -1,8 +1,8 @@
 /** Rare and legendary bloom moments: bursts, the screen flash, camera shake and the banner. */
 
 import { dom } from '../core/dom.js';
-import { rand } from '../core/math.js';
 import { view } from '../core/state.js';
+import { sparkHue } from '../flowers/hue.js';
 import { shakeCamera, toScreenX, toScreenY } from '../render/camera.js';
 import { spawnBurst } from './particles.js';
 
@@ -41,9 +41,7 @@ export function rareBloom(f) {
 
 /** @param {Flower} f */
 export function legendaryBloom(f) {
-  for (let k = 0; k < 3; k++) {
-    spawnBurst(f.cx, f.cy, f.kind === 'celestial' ? rand(0, 360) : f.hue + k * 12, f.R * 1.5, 40);
-  }
+  for (let k = 0; k < 3; k++) spawnBurst(f.cx, f.cy, sparkHue(f, k / 3), f.R * 1.5, 40);
   shakeCamera();
   flashAt(f);
   showBanner('legendary', f.sp.name);

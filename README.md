@@ -58,3 +58,7 @@ assets/
 2. Import it in `species/index.js` and add it to `SPECIES`.
 3. For a common flower, add its key to `gardenSpecies` / `plantOrder` in `config.js`.
    Rare and legendary ones are picked up automatically from their `rarity`.
+
+Optional extras a species can define: `sparkHue(f, k)` to color its sparks and orbiting comets
+(see `celestial.js`), and `ambient(f, dt)` for its own particles once it's open (see the
+snowfall in `frost-bloom.js` or the crackling sparks in `storm-lily.js`).
