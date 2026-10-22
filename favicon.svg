@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="60%">
+      <stop offset="0" stop-color="#3a1404"/>
+      <stop offset="1" stop-color="#0b0507"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ff9a2a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ff6a00" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="outer" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#ffd27a"/>
+      <stop offset="0.35" stop-color="#ff8a1f"/>
+      <stop offset="1" stop-color="#e5470b"/>
+    </linearGradient>
+    <linearGradient id="inner" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#fff1c9"/>
+      <stop offset="0.4" stop-color="#ffb347"/>
+      <stop offset="1" stop-color="#ff7a1a"/>
+    </linearGradient>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.5" stop-color="#ffe08a"/>
+      <stop offset="1" stop-color="#ff9a2a"/>
+    </radialGradient>
+    <path id="p" d="M32 32C40 26.7 38.8 15.2 32 8C25.2 15.2 24 26.7 32 32Z" fill="url(#outer)"/>
+    <path id="q" d="M32 32C38 28.5 37.1 20.8 32 16C26.9 20.8 26 28.5 32 32Z" fill="url(#inner)"/>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <circle cx="32" cy="32" r="30" fill="url(#halo)"/>
+  <use href="#p"/>
+  <use href="#p" transform="rotate(45 32 32)"/>
+  <use href="#p" transform="rotate(90 32 32)"/>
+  <use href="#p" transform="rotate(135 32 32)"/>
+  <use href="#p" transform="rotate(180 32 32)"/>
+  <use href="#p" transform="rotate(225 32 32)"/>
+  <use href="#p" transform="rotate(270 32 32)"/>
+  <use href="#p" transform="rotate(315 32 32)"/>
+  <use href="#q" transform="rotate(22.5 32 32)"/>
+  <use href="#q" transform="rotate(82.5 32 32)"/>
+  <use href="#q" transform="rotate(142.5 32 32)"/>
+  <use href="#q" transform="rotate(202.5 32 32)"/>
+  <use href="#q" transform="rotate(262.5 32 32)"/>
+  <use href="#q" transform="rotate(322.5 32 32)"/>
+  <circle cx="32" cy="32" r="5.5" fill="url(#core)"/>
+</svg>
