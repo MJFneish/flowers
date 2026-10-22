@@ -1,0 +1,58 @@
+/* Full-screen layers: the scene canvas, its glow, the vignette and the legendary flash */
+
+canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#garden {
+  z-index: 1;
+  cursor: pointer;
+  touch-action: none; /* pan / pinch are handled in JS */
+}
+
+/* Cheap "bloom": a low-res copy of the scene, blurred and screen-blended on top */
+#glow {
+  z-index: 2;
+  pointer-events: none;
+  filter: blur(10px) saturate(1.35) brightness(1.15);
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* White flash when a legendary flower opens (centered on it via --fx / --fy) */
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at var(--fx, 50%) var(--fy, 45%),
+    rgba(255, 250, 235, 0.95), rgba(255, 215, 140, 0.45) 35%, transparent 75%);
+}
+
+.flash.go {
+  animation: flash 1.4s ease-out;
+}
+
+@keyframes flash {
+  0%   { opacity: 0; }
+  8%   { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash.go { animation: none; }
+}

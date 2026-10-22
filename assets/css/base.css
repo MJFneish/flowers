@@ -1,0 +1,81 @@
+/* Design tokens, reset, the night-sky page background and the boot notice */
+
+:root {
+  --bg: #050308;
+  --ember-soft: rgba(255, 170, 100, 0.6);
+  --accent: #ffb070;
+  --line: rgba(255, 150, 70, 0.35);
+  --panel: rgba(20, 8, 4, 0.45);
+  --ctl-size: 44px;
+  --gap: 16px;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  overscroll-behavior: none;
+}
+
+body {
+  /* night sky with a warm glow rising from the ground */
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 108%, rgba(255, 110, 20, 0.28), transparent 65%),
+    radial-gradient(ellipse 60% 35% at 50% 100%, #2e1004 0%, transparent 70%),
+    linear-gradient(180deg, #030207 0%, #08040b 55%, #150803 100%);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Shown only when the scripts fail to load (e.g. the page was opened as a file) */
+.boot-note {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 10;
+  width: min(440px, calc(100% - 2 * var(--gap)));
+  transform: translate(-50%, -50%);
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(20, 8, 4, 0.88);
+  box-shadow: 0 0 40px rgba(255, 110, 30, 0.2);
+  color: #ffd9b8;
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: center;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.boot-note strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.boot-note code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(255, 150, 70, 0.15);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.9em;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --gap: 12px;
+  }
+}

@@ -6,8 +6,12 @@
   <title>Glowing Flowers</title>
   <meta name="description" content="A night garden of glowing flowers that grow and bloom — pure HTML, CSS and JavaScript.">
   <meta name="theme-color" content="#050308">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layers.css">
+  <link rel="stylesheet" href="assets/css/banner.css">
+  <link rel="stylesheet" href="assets/css/hint.css">
+  <link rel="stylesheet" href="assets/css/controls.css">
 </head>
 <body>
   <!-- Main scene: stems, leaves, petals, grass, bees, particles -->
@@ -25,7 +29,7 @@
     <span class="banner-name" id="bannerName"></span>
   </div>
 
-  <p class="hint" id="hint">Tap anywhere to grow a flower</p>
+  <p class="hint" id="hint"></p>
 
   <button class="ctl replay" id="replay" type="button" aria-label="Replay animation" title="Replay">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
@@ -63,6 +67,14 @@
     </button>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Shown only if the scripts can't load (browsers block modules on pages opened as a file) -->
+  <div class="boot-note" id="bootNote" role="alert" hidden>
+    <strong>Almost there</strong>
+    This garden is built from JavaScript modules, and browsers block those when a page is opened
+    straight from a file. Open it through a local server instead — for example the VS Code
+    <em>Live Server</em> extension, or run <code>npx serve</code> in this folder.
+  </div>
+
+  <script type="module" src="assets/js/main.js" onerror="document.getElementById('bootNote').hidden = false"></script>
 </body>
 </html>

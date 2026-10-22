@@ -1,0 +1,37 @@
+/* The "tap to plant…" hint at the bottom of the screen */
+
+.hint {
+  position: fixed;
+  left: 50%;
+  bottom: max(var(--gap), env(safe-area-inset-bottom));
+  transform: translate(-50%, 8px);
+  z-index: 5;
+  /* leave room for the control buttons on either side */
+  max-width: calc(100% - 2 * (var(--ctl-size) + var(--gap) + 12px));
+  color: var(--ember-soft);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18em;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(255, 120, 40, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.4s ease, transform 1.4s ease;
+}
+
+.hint.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 480px) {
+  .hint {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hint { transition: none; }
+}
